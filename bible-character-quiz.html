@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>你最像哪位圣经人物？</title>
+  <style>
+    :root{--ink:#24333b;--muted:#6f7c7b;--cream:#fffaf1;--paper:#fffdf8;--teal:#3d7771;--gold:#d7a84d;--line:#e7dfd1;--shadow:0 18px 50px rgba(42,57,57,.12)}
+    *{box-sizing:border-box} body{margin:0;color:var(--ink);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:linear-gradient(135deg,#edf5ef 0%,#fffaf1 58%,#f8efe1 100%);min-height:100vh}
+    .wrap{width:min(720px,calc(100% - 32px));margin:0 auto;padding:32px 0 48px}.hero{text-align:center;padding:28px 12px 22px}.eyebrow{color:var(--teal);font-size:13px;letter-spacing:.16em;font-weight:700}.hero h1{font-family:Georgia,"Songti SC",serif;font-size:clamp(30px,7vw,54px);line-height:1.15;margin:14px 0 12px;color:#294c4a}.hero p{color:var(--muted);margin:0 auto;max-width:520px;line-height:1.8}.card{background:rgba(255,253,248,.94);border:1px solid rgba(231,223,209,.95);border-radius:24px;box-shadow:var(--shadow);padding:clamp(22px,5vw,42px)}
+    .intro{text-align:center}.intro .mark{font-size:38px;margin-bottom:8px}.intro h2{font-family:Georgia,"Songti SC",serif;margin:0 0 12px;font-size:25px}.intro p{color:var(--muted);line-height:1.8;margin:0}.btn{appearance:none;border:0;border-radius:999px;background:var(--teal);color:white;font:inherit;font-weight:700;padding:14px 26px;cursor:pointer;transition:.2s;box-shadow:0 8px 18px rgba(61,119,113,.2)}.btn:hover{transform:translateY(-2px);background:#315f5b}.btn.secondary{background:#eee8dc;color:var(--ink);box-shadow:none}.intro .btn{margin-top:24px}.hidden{display:none!important}.topline{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:14px;margin-bottom:18px}.progress{height:7px;background:#eee8dc;border-radius:9px;overflow:hidden;margin-bottom:28px}.progress i{display:block;height:100%;background:var(--gold);border-radius:inherit;transition:width .3s}.question{font-family:Georgia,"Songti SC",serif;font-size:25px;line-height:1.5;margin:0 0 22px}.options{display:grid;gap:12px}.option{width:100%;text-align:left;border:1px solid var(--line);background:#fffdf9;border-radius:15px;padding:16px 17px;color:var(--ink);font:inherit;line-height:1.55;cursor:pointer;transition:.18s}.option:hover{border-color:var(--teal);background:#f2f8f3;transform:translateX(2px)}.option b{display:inline-flex;align-items:center;justify-content:center;width:27px;height:27px;border-radius:50%;background:#edf4ee;color:var(--teal);margin-right:9px;font-size:14px}.result{text-align:center}.result .badge{font-size:52px;margin-bottom:4px}.result h2{font-family:Georgia,"Songti SC",serif;font-size:32px;color:#294c4a;margin:5px 0 10px}.result .subtitle{color:var(--teal);font-weight:700}.result .desc{text-align:left;line-height:1.9;color:#53615f;margin:24px 0}.traits{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:18px 0 24px}.trait{background:#f1eadb;color:#80602c;border-radius:999px;padding:7px 12px;font-size:13px}.quote{background:#f4f7f1;border-left:4px solid var(--gold);padding:15px 17px;text-align:left;color:#596764;line-height:1.8;font-size:14px;border-radius:0 12px 12px 0}.share{text-align:center;color:var(--muted);font-size:13px;line-height:1.7;margin-top:24px}.footer{text-align:center;color:#8a918c;font-size:12px;margin-top:18px}.actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:24px}@media(max-width:520px){.wrap{width:min(100% - 20px,720px);padding-top:15px}.card{border-radius:19px;padding:22px 18px}.question{font-size:22px}}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <header class="hero"><div class="eyebrow">A LIGHTHEARTED PERSONALITY QUIZ</div><h1>你最像哪位圣经人物？</h1><p>用 5 个日常问题，发现与你性格倾向相近的一位圣经人物。</p></header>
+    <section id="intro" class="card intro">
+      <div class="mark">✦</div><h2>从你的选择，认识一个故事</h2>
+      <p>没有标准答案，也不需要先懂圣经。请凭第一直觉作答，完成后你会看到一位可能与你有共鸣的人物。</p>
+      <button class="btn" id="start">开始测试</button>
+    </section>
+    <section id="quiz" class="card hidden" aria-live="polite">
+      <div class="topline"><span id="counter">第 1 / 5 题</span><span id="percent">20%</span></div><div class="progress"><i id="progress" style="width:20%"></i></div>
+      <h2 id="question" class="question"></h2><div id="options" class="options"></div>
+    </section>
+    <section id="result" class="card result hidden" aria-live="polite"></section>
+    <div class="footer">这是一项轻松的自我探索活动，不是心理诊断或信仰判断。</div>
+  </main>
+  <script>
+    const questions=[
+      {q:'当你遇到一个新机会时，你通常会……',o:[['A','先观察和了解清楚，再决定要不要参与','A'],['B','只要觉得值得，就愿意承担风险试试看','B'],['C','先考虑身边重要的人，再决定怎么做','C'],['D','想办法把事情做好，即使过程可能很漫长','D'],['E','先行动起来，边做边调整','E']]},
+      {q:'当别人误解你时，你比较可能……',o:[['A','先忍耐一段时间，用实际行动证明自己','E'],['B','找机会把事情说清楚，不喜欢留下疑问','A'],['C','有点冲动地立刻解释，甚至可能说得太多','C'],['D','虽然心里难受，还是尽量顾全大局','B'],['E','不急着辩解，相信时间会说明一切','D']]},
+      {q:'朋友遇到困难来找你，你通常会……',o:[['A','陪着他一起面对，不会轻易离开','D'],['B','先问清楚事情的来龙去脉，再给建议','A'],['C','马上想办法解决问题，能做什么就做什么','C'],['D','鼓励他勇敢一点，并陪他迈出第一步','B'],['E','先安静听他说，让他知道自己不是一个人','E']]},
+      {q:'你觉得自己比较需要成长的地方是……',o:[['A','有时太谨慎，容易因为想确认清楚而迟疑','A'],['B','有时太在意别人的需要，忘了照顾自己','D'],['C','有时太急着行动，事后才发现需要重新调整','C'],['D','有时会把压力藏在心里，不容易主动表达','E'],['E','有时为了完成目标太坚持，容易忽略自己的感受','B']]},
+      {q:'如果用一句话形容你面对人生的态度，你更接近……',o:[['A','我需要想明白，但我愿意继续寻找答案。','A'],['B','即使害怕，我也希望在关键时刻勇敢一次。','B'],['C','我可能会跌倒，但我愿意重新站起来。','C'],['D','我想忠于重要的人，也忠于自己的选择。','D'],['E','经历过的事情不会白费，我会从中成长。','E']]}
+    ];
+    const results={
+      A:{name:'多马',icon:'◌',sub:'认真求真的探索者',traits:['求真','审慎','诚实','思考'],desc:'你通常不会因为大家都这么说，就马上接受一个观点。你喜欢观察、思考和确认，希望自己所相信的事情是真实而可靠的。你的优点是诚实、理性、认真，不容易盲从。',story:'带着问题寻找答案，并不等于没有信心。真实的探索，也可以成为一段信仰旅程的开始。'},
+      B:{name:'以斯帖',icon:'✧',sub:'安静而勇敢的人',traits:['勇气','责任','同理心','坚定'],desc:'你未必是最喜欢站在众人面前的人，但在重要时刻，你愿意为了保护别人、坚持正义而承担责任。你的勇气不一定表现为毫不害怕，而是即使害怕，仍然愿意做该做的事。',story:'有些勇敢并不喧闹，却能在关键时刻带来改变。'},
+      C:{name:'彼得',icon:'◒',sub:'热情而真实的行动派',traits:['热情','直接','行动力','成长'],desc:'你通常反应快、感受强，也愿意第一个站出来尝试。你可能不是永远最稳妥的人，但你很有热情，也愿意投入关系和重要的事情。',story:'一个人即使失败，也不代表故事结束；成长往往发生在重新站起来之后。'},
+      D:{name:'路得',icon:'❧',sub:'忠诚而有韧性的人',traits:['忠诚','陪伴','坚韧','体贴'],desc:'你很重视承诺和关系。当别人选择离开时，你往往愿意留下；当道路不容易时，你也能一步一步坚持下去。你的优点是可靠、体贴、有耐力。',story:'平凡而持续的忠诚，也可以走出一条意想不到的人生道路。'},
+      E:{name:'约瑟',icon:'✦',sub:'在经历中成长的人',traits:['韧性','宽容','洞察力','成长'],desc:'你可能经历过一些不容易的事情，但你有能力从挫折中学习，并逐渐形成更宽广的眼光。你不一定马上明白事情的意义，却愿意继续往前走。',story:'过去的经历可以影响我们，却不一定决定我们的未来。'}
+    };
+    let current=0,answers=[];
+    const $=id=>document.getElementById(id);
+    function showQuestion(){const item=questions[current];$('counter').textContent=`第 ${current+1} / ${questions.length} 题`;$('percent').textContent=`${Math.round((current+1)/questions.length*100)}%`;$('progress').style.width=`${(current+1)/questions.length*100}%`;$('question').textContent=item.q;$('options').innerHTML='';item.o.forEach(([letter,text,key])=>{const b=document.createElement('button');b.className='option';b.innerHTML=`<b>${letter}</b>${text}`;b.onclick=()=>{answers.push(key);current++;if(current<questions.length)showQuestion();else showResult()};$('options').appendChild(b)})}
+    function showResult(){const count=answers.reduce((a,k)=>(a[k]=(a[k]||0)+1,a),{});const key=Object.keys(count).sort((a,b)=>count[b]-count[a])[0],r=results[key];$('quiz').classList.add('hidden');$('result').classList.remove('hidden');$('result').innerHTML=`<div class="badge">${r.icon}</div><div class="subtitle">你可能更像</div><h2>${r.name}</h2><div class="subtitle">${r.sub}</div><div class="traits">${r.traits.map(t=>`<span class="trait">${t}</span>`).join('')}</div><p class="desc">${r.desc}</p><div class="quote">${r.story}</div><div class="actions"><button class="btn" onclick="restart()">再测一次</button><button class="btn secondary" onclick="shareResult('${r.name}')">分享结果</button></div><div class="share">结果仅代表你此刻的性格倾向。也许过一段时间再测，你会发现自己身上还有另一位人物的影子。</div>`;window.scrollTo({top:0,behavior:'smooth'})}
+    function restart(){current=0;answers=[];$('result').classList.add('hidden');$('quiz').classList.remove('hidden');showQuestion();window.scrollTo({top:0,behavior:'smooth'})}
+    async function shareResult(name){const text=`我测出来比较像圣经人物${name}！你也来试试：${location.href}`;try{await navigator.clipboard.writeText(text);alert('结果文字已复制，可以发给朋友了！')}catch(e){alert(text)}}
+    $('start').onclick=()=>{$('intro').classList.add('hidden');$('quiz').classList.remove('hidden');showQuestion()};
+  </script>
+</body>
+</html>
